@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+    
+    <head>
+        
+        <title>Banjara Inc.</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="scripts/Payroll.js"></script>
+        <style type="text/css" src="main.css"></style>
+        
+        
+    </head>
+    
+    <body>
+        
+        <header>
+            
+            <h1>Banjara Inc.</h1>
+            
+        </header>
+        
+        <p><a href="index.html">Clock-In/Clock-Out</a></p>
+        <p><a href="login.html">Sign In</a></p>
+        <p><a href="terminal.html">View Terminal</a></p>
+        <br></br>
+        
+        <form name = "insertform" id = "insertform" action="#">
+            
+            <fieldset>
+                
+                <legend>Clock-In/Clock-Out</legend>
+                
+                <p>
+                    <label for="input">Badge ID:</label>
+                    <input type="text" name="badgeid" id="badgeid">
+                </p>
+                
+                <p>
+                    <label for="input">Terminal ID:</label>
+                    <input type="text" name="terminalid" id="terminalid">
+                </p>
+                
+                <input type="button" value="Submit" onclick="Payroll.submitTimeClock();">        
+                
+            </fieldset>
+               
+        </form>
+        
+        <div id="resultarea">
+            
+            
+            
+        </div>
+        
+        <script type="text/javascript">
+            
+            $(document).ready( Payroll.init ); 
+            
+        </script>
+        
+    </body>
+    
+</html>
