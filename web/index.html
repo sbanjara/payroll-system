@@ -8,9 +8,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
+        <script type="text/javascript" src="scripts/Project1.js"></script>
         <script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="scripts/Payroll.js"></script>
-        <style type="text/css" src="main.css"></style>
+        <link rel="stylesheet" type="text/css" href="main.css">
         
         
     </head>
@@ -23,43 +23,33 @@
             
         </header>
         
-        <p><a href="index.html">Clock-In/Clock-Out</a></p>
-        <p><a href="login.html">Sign In</a></p>
-        <p><a href="terminal.html">View Terminal</a></p>
-        <br></br>
+        <div id="sub-header">
         
-        <form name = "insertform" id = "insertform" action="#">
-            
-            <fieldset>
-                
-                <legend>Clock-In/Clock-Out</legend>
-                
-                <p>
-                    <label for="input">Badge ID:</label>
-                    <input type="text" name="badgeid" id="badgeid">
-                </p>
-                
-                <p>
-                    <label for="input">Terminal ID:</label>
-                    <input type="text" name="terminalid" id="terminalid">
-                </p>
-                
-                <input type="button" value="Submit" onclick="Payroll.submitTimeClock();">        
-                
-            </fieldset>
+            <a href="index.html">Clock-In/Clock-Out</a>
+            <a href="login.html">Sign In</a>
+            <a href="terminal.html">View Terminal</a>
+            <br></br>
+        
+        </div>
+        
+        <form name="insertform" id="insertform" action="attendanceconfirmation.jsp" method="POST">
+              
+            <label for="input">Badge ID:</label>
+            <input type="text" name="badgeid" id="badgeid">
+
+            <input type="Submit" value="Submit">        
                
         </form>
         
-        <div id="resultarea">
-            
+        <div id="resultsarea">
             
             
         </div>
         
         <script type="text/javascript">
-            
-            $(document).ready( Payroll.init ); 
-            
+
+            $(document).ready( Project1.init );
+
         </script>
         
     </body>

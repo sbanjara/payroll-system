@@ -56,7 +56,6 @@ public class Shift {
         return stoppingTime;
     }
     
-
     public int getStoppingTimeHour() {
         return getStoppingTime().getHour();
     }

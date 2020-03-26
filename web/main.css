@@ -1,7 +1,42 @@
 
-h1 {
+body {
     
-    background-color: darkorange;
+    margin: -25px;
+    padding: 0;
+    border: 0;
+    color: red;
     text-align: center;
+    
+}
+
+header {
+    padding: 10px;
+    background-color: #BC0000;
+    color: white;
+}
+  
+#sub-header {
+    
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+ 
+}
+
+#sub-header > a {
+  
+    color: #BC0000;
+    background-color: #f1f1f1;
+    margin-left: 20px;
+    padding: 20px;
+    font-size: 20px;
+    text-decoration: none;
+  
+}
+
+form {
+    
+    margin-top: 100px;
     
 }

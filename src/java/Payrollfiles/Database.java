@@ -8,9 +8,6 @@ import java.text.SimpleDateFormat;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
 
 /**
  * The Database class is used by the Server to connect to the database
@@ -36,7 +33,7 @@ public class Database {
 
     }
     
-    public Badge getBadge(String badgeID) {
+    public Badge getBadge(String badgeid) {
         
         String id = null;
         String description = null;
@@ -44,9 +41,7 @@ public class Database {
         String query = null;
         boolean hasresults;
         PreparedStatement pstatement = null;
-        ResultSet resultset = null;
-        ResultSetMetaData metadata = null;
-        
+        ResultSet resultset = null;  
         
         try {
             
@@ -54,15 +49,13 @@ public class Database {
 
             pstatement = conn.prepareStatement(query);
                 
-            if(badgeID.length() == 8)
-                pstatement.setString(1, badgeID);
+            if(badgeid.length() == 8)
+                pstatement.setString(1, badgeid);
                 
             hasresults = pstatement.execute();                
  
             if ( hasresults ) {
-
-                /* Get ResultSet */
-
+                
                 resultset = pstatement.getResultSet();
 
                 while(resultset.next()) {
@@ -78,13 +71,10 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace(); }
         
-        finally { closeConnection(conn, resultset, pstatement); }
-        
         Badge b = new Badge(id, description);    
         return b;
         
     }
-    
     
     public Punch getPunch(int punchID) {
        
@@ -130,9 +120,10 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace(); }
         
-        finally { closeConnection(conn, resultset, pstatement); }
+        //finally { closeConnection(conn, resultset, pstatement); }
  
         Punch p = new Punch(id, terminalID, badgeID, originalTimestamp, punchTypeID);
+        
         return p;
         
     }
@@ -191,7 +182,7 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace();  }
         
-        finally { closeConnection(conn, resultset, pstatement); }
+        //finally { closeConnection(conn, resultset, pstatement); }
         
         int shiftStartHour = Integer.parseInt(startingTime[0]);
         int shiftStartMinute = Integer.parseInt(startingTime[1]);
@@ -246,17 +237,18 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace(); }
         
-        finally { closeConnection(conn, resultset, pstatement); }
+        //finally { closeConnection(conn, resultset, pstatement); }
          
         return s;
         
     }
     
    
-    public String insertPunch(Punch p) {
+    public void insertPunch(Punch p) {
         
         String query = null;
         int result = 0;
+        int id = 0;
         PreparedStatement pstatement = null;
         ResultSet resultset = null;
         ResultSetMetaData metadata = null;
@@ -272,9 +264,6 @@ public class Database {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String formatteddots  = sdf.format(originalTimeStamp);
         
-        JSONObject json= new JSONObject();
-        String results = "";
-        
         try {
 
             query = "INSERT INTO punch(terminalid, badgeid, originaltimestamp, punchtypeid)"
@@ -285,6 +274,7 @@ public class Database {
             pstatement.setInt(1, terminalID);
             pstatement.setString(2, badgeID);
             pstatement.setString(3, formatteddots);
+            pstatement.setInt(4, p.getPunchtypeid());
                 
             result = pstatement.executeUpdate();
             
@@ -292,23 +282,16 @@ public class Database {
                 
                 resultset = pstatement.getGeneratedKeys();
                 if(resultset.next()) {
-                    newPunchID = resultset.getInt(1);
+                    id = resultset.getInt(1);
                 }
-               
+                 
             }
        
         }
       
         catch (Exception e) {  e.printStackTrace(); }
         
-        finally { closeConnection(conn, resultset, pstatement); }
-        
-        json.put("id", newPunchID);
-        json.put("punchtypeid", punchTypeID);
-        
-        results = JSONValue.toJSONString(json);
-        
-        return results.trim();
+        //finally { closeConnection(conn, resultset, pstatement); }
         
     }
     
@@ -316,7 +299,7 @@ public class Database {
     public ArrayList getDailyPunchList(Badge b, long ts) {
         
         String query = null;
-        boolean hasresults;
+        boolean hasresults = false;
         PreparedStatement pstatement = null;
         ResultSet resultset = null;
         ResultSetMetaData metadata = null;
@@ -324,10 +307,10 @@ public class Database {
         ArrayList<Punch> punchlist = new ArrayList();
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTimeInMillis(ts);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String date = format.format(cal.getTime());
+        SimpleDateFormat formatstring = new SimpleDateFormat("yyyy-MM-dd");
+        String date = formatstring.format(cal.getTime());
         cal.add( Calendar.DATE, 1 );
-        String datePlus1 = format.format(cal.getTime());
+        String datePlus1 = formatstring.format(cal.getTime());
         int lastPunchType = 0;
         
         try {
@@ -342,22 +325,25 @@ public class Database {
             pstatement.setString(2, date);
                 
             hasresults = pstatement.execute();                
-            resultset = pstatement.getResultSet();
+            
+            if(hasresults) {
                          
-            resultset = pstatement.getResultSet();                    
-            
-            while(resultset.next()) {
-                       
-                punchlist.add(new Punch(resultset.getInt("id"), resultset.getInt("terminalid"),
-                        resultset.getString("badgeid"), resultset.getTimestamp("originaltimestamp"),
-                        resultset.getInt("punchtypeid")));
+                resultset = pstatement.getResultSet();                    
 
-            }
+                while(resultset.next()) {
+
+                    punchlist.add(new Punch(resultset.getInt("id"), resultset.getInt("terminalid"),
+                            resultset.getString("badgeid"), resultset.getTimestamp("originaltimestamp"),
+                            resultset.getInt("punchtypeid")));
+
+                }
+
+                if (resultset.last()) {
+
+                    lastPunchType = resultset.getInt("punchtypeid");
+
+                }
             
-            if (resultset.last()) {
-                
-                lastPunchType = resultset.getInt("punchtypeid");
-                 
             }
             
         }        
@@ -366,7 +352,7 @@ public class Database {
         
         try {
             
-            query = "SELECT punch WHERE badgeid = ? AND DATE(originaltimestamp) = ?";
+            query = "SELECT * FROM punch WHERE badgeid = ? AND DATE(originaltimestamp) = ?";
   
             pstatement = conn.prepareStatement(query);
             
@@ -374,13 +360,13 @@ public class Database {
             pstatement.setString(2, datePlus1); 
             
             hasresults = pstatement.execute();                
-            resultset = pstatement.getResultSet(); 
        
             if(hasresults) {  
                 
+                resultset = pstatement.getResultSet(); 
                 if(resultset.first()) {
                 
-                    if (resultset.getInt("punchtypeid") == Logic.CLOCKOUT && lastPunchType == Logic.CLOCKIN) {
+                    if ( (resultset.getInt("punchtypeid") == Logic.CLOCKOUT) && (lastPunchType == Logic.CLOCKIN) ) {
 
                         punchlist.add( new Punch( resultset.getInt("id"), resultset.getInt("terminalid"),
                                 resultset.getString("badgeid"), resultset.getTimestamp("originaltimestamp"), 
@@ -395,7 +381,7 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace(); }
         
-        finally { closeConnection(conn, resultset, pstatement); }
+        //finally { closeConnection(conn, resultset, pstatement); }
         
         return punchlist;
         
@@ -470,7 +456,7 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace(); }
         
-        finally { closeConnection(conn, resultset, pstatement); }
+        //finally { closeConnection(conn, resultset, pstatement); }
         
         return punchlist;
         
@@ -525,7 +511,7 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace(); }
         
-        finally { closeConnection(conn, resultset, pstatement); }
+        //finally { closeConnection(conn, resultset, pstatement); }
        
         return a;
         
@@ -569,7 +555,7 @@ public class Database {
         
         catch (Exception e) { e.printStackTrace(); }
             
-        finally { closeConnection(conn, resultset, pstatement); }
+        //finally { closeConnection(conn, resultset, pstatement); }
         
     }
     
