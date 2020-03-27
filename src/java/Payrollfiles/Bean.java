@@ -84,8 +84,12 @@ public class Bean {
             result = "Error, Number of Punches exceeded!!";
         }
         
-        Punch p = new Punch(b, 105, punchtypeid);
-        db.insertPunch(p);
+        if( numOfPunches <= 3 && !(badgeid.isEmpty()) ) {
+            
+            Punch p = new Punch(b, 105, punchtypeid);
+            db.insertPunch(p);
+            
+        }
         
         this.setPunchtypeid(result);
         
