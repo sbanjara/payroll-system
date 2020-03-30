@@ -13,6 +13,11 @@ public class Bean {
     
     public Bean() {
         
+        this.badgeid = "";
+        this.terminalid = 0;
+        this.description = "";
+        this.punchtypeid = "";
+        
     }
 
     public String getBadgeid() {
@@ -54,44 +59,54 @@ public class Bean {
         return b;
     }
     
-    public void insertPunch() {
+    public void insertPunch(int terminalid) {
         
         Database db = new Database();
-        Badge b = getBadge(this.getBadgeid());
-        String result = String.valueOf(1);
-        int punchtypeid = 1;
-        ArrayList<Punch> punches = db.getDailyPunchList(b, System.currentTimeMillis());
-        int numOfPunches = punches.size();
         
-        if(numOfPunches == 0) {
-            punchtypeid = Logic.CLOCKIN;
-            result = String.valueOf(punchtypeid);
-        }
-        else if(numOfPunches <= 3) {
+        if( this.getBadgeid().length() == 8 ) {
             
-            Punch lastpunch = punches.get(punches.size()-1);
-            int id = lastpunch.getPunchtypeid();
-            if(id == Logic.CLOCKIN) {
-                punchtypeid = Logic.CLOCKOUT;
-            }
-            else if(id == Logic.CLOCKOUT) {
+            Badge b = getBadge(this.getBadgeid());
+            String result = String.valueOf(1);
+            int punchtypeid = 1;
+            ArrayList<Punch> punches = db.getDailyPunchList(b, System.currentTimeMillis());
+            int numOfPunches = punches.size();
+
+            if(numOfPunches == 0) {
                 punchtypeid = Logic.CLOCKIN;
+                result = String.valueOf(punchtypeid);
             }
-            result = String.valueOf(punchtypeid);
-            
+            else if(numOfPunches <= 3) {
+
+                Punch lastpunch = punches.get(punches.size()-1);
+                int id = lastpunch.getPunchtypeid();
+                if(id == Logic.CLOCKIN) {
+                    punchtypeid = Logic.CLOCKOUT;
+                }
+                else if(id == Logic.CLOCKOUT) {
+                    punchtypeid = Logic.CLOCKIN;
+                }
+                result = String.valueOf(punchtypeid);
+
+            }
+            else {
+                result = "Error, Number of Punches exceeded!!";
+            }
+
+            if( numOfPunches <= 3 && !(badgeid.isEmpty()) ) {
+
+                Punch p = new Punch(b, terminalid, punchtypeid);
+                db.insertPunch(p);
+
+            }
+
+            this.setPunchtypeid(result);
+        
         }
+        
         else {
-            result = "Error, Number of Punches exceeded!!";
+            this.setBadgeid("");
+            this.setPunchtypeid("Error, Please fill the BadgeID field."); 
         }
-        
-        if( numOfPunches <= 3 && !(badgeid.isEmpty()) ) {
-            
-            Punch p = new Punch(b, 105, punchtypeid);
-            db.insertPunch(p);
-            
-        }
-        
-        this.setPunchtypeid(result);
         
     }
     

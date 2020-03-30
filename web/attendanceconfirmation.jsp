@@ -5,7 +5,14 @@
 
 <jsp:setProperty name="bean" property="*" />
 
-<% bean.insertPunch(); %>
+<%  
+    
+    String id = bean.getBadgeid();
+    if( !(id.isEmpty()) ) {
+        bean.insertPunch(105);
+    }
+  
+%>
 
 <!DOCTYPE html>
 
@@ -36,10 +43,17 @@
 
         <%
             }
+            else if( punchid.equals("Error, Number of Punches exceeded!!") ) {
+        %>
+        
+        <p>Error, Number of Punches exceeded!!</p>
+
+        <%
+            }
             else {
         %>
         
-        <p>"Error, Number of Punches exceeded!!"</p>
+         <p>Error, Please fill the BadgeID field.</p>
 
         <%
             }

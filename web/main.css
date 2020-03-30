@@ -51,7 +51,9 @@ img {
 }
 
 #sub-header > a:hover {
+    
     background-color: #f1f1f1;
+    
 }
 
 form {
@@ -91,4 +93,10 @@ form {
     
     background-color: #0f2040;
      
+}
+
+#resultsarea {
+    
+    text-align: center;
+    font-size: 20px;
 }
