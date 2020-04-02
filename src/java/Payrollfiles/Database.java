@@ -33,6 +33,45 @@ public class Database {
 
     }
     
+    public String getBadgeid(String username) {
+        
+        String id = null;
+        String query = null;
+        boolean hasresults;
+        PreparedStatement pstatement = null;
+        ResultSet resultset = null;  
+        
+        try {
+            
+            query = "SELECT * FROM employee WHERE firstname = ?";
+
+            pstatement = conn.prepareStatement(query);
+                
+            if(!username.isEmpty())
+                pstatement.setString(1, username);
+                
+            hasresults = pstatement.execute();                
+ 
+            if ( hasresults ) {
+                
+                resultset = pstatement.getResultSet();
+
+                while(resultset.next()) {
+
+                    id = resultset.getString("badgeid");
+
+                }
+
+            }
+
+        }
+        
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return id;
+        
+    }
+    
     public Badge getBadge(String badgeid) {
         
         String id = null;

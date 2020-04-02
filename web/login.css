@@ -13,19 +13,33 @@ header {
     background-color: #0f2040;
     color: #fff;
     font-family: sans-serif;
-    font-size: 30px;
+    font-size: 40px;
     text-align: center;
     
 }
 
 #sub-header {
     
-    text-align: center;
-    font-size: 20px;
+    display: flex;
+    justify-content: center;
     border-bottom: solid;
-    border-bottom-color: black;
     border-bottom-width: 1px;
  
+}
+
+#sub-header > a {
+  
+    color: #363636;
+    padding: 10px 30px 10px 30px;
+    font-size: 30px;
+    text-decoration: none;
+  
+}
+
+#sub-header > a:hover {
+    
+    background-color: #f1f1f1;
+    
 }
 
 #container {
@@ -42,14 +56,14 @@ header {
     padding-left: 32%;
     padding-right: 32%;	
     font-family: Helvetica;
-    font-size: 20px;
+    font-size: 30px;
     
 }
 
 #j_username {
     
     color: #1F2667;
-    height: 25px;
+    height: 30px;
     padding: 5px 15px 5px 15px;
    
 }
@@ -57,7 +71,7 @@ header {
 #j_password {
     
     color: #1F2667;
-    height: 25px;
+    height: 30px;
     padding: 5px 15px 5px 15px;
     
 }
@@ -71,7 +85,7 @@ header {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 20px;
     margin: 4px 2px;
     cursor: pointer;
         

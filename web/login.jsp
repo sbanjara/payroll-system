@@ -12,9 +12,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="login.css">
-        
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/login.css">
         
     </head>
     
@@ -26,9 +24,11 @@
             
         </header>
         
-         <div id="sub-header"> 
+        <div id="sub-header"> 
             
-            <p>Login Setup</p>
+            <a href="login.jsp">Login Setup</a>
+            <a href="index.html">Home Page</a>
+            <br></br>
                
         </div>
         

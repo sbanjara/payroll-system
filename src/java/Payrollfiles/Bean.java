@@ -1,23 +1,40 @@
 
 package Payrollfiles;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
 public class Bean {
     
+    private String username;
     private String badgeid;
     private int terminalid;
     private String description;
     private String punchtypeid;
+    private String punchlistdate;
+    private long timestamp;
+    private ArrayList<Punch> dailypunchlist;
     
     public Bean() {
         
+        this.username = "";
         this.badgeid = "";
         this.terminalid = 0;
         this.description = "";
         this.punchtypeid = "";
+        this.punchlistdate = "";
         
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getBadgeid() {
@@ -57,6 +74,51 @@ public class Bean {
         Badge b = db.getBadge(badgeid);
         this.setDescription(b.getName());
         return b;
+    }
+
+    public String getPunchlistdate() {
+        return punchlistdate;
+    }
+
+    public void setPunchlistdate(String punchlistdate) {
+        this.punchlistdate = punchlistdate;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        
+        if(!timestamp.isEmpty()) {
+            
+            String[] date = timestamp.split("-");
+            int year = Integer.parseInt(date[0]);
+            int month = Integer.parseInt(date[1]);
+            int day = Integer.parseInt(date[2]);
+            LocalDateTime ldt = LocalDateTime.of(year, month, day, 0, 0);
+            Timestamp ts = Timestamp.valueOf(ldt);
+            this.timestamp = ts.getTime();
+            
+        }
+        
+    }
+
+    public ArrayList<Punch> getDailypunchlist() {
+        return dailypunchlist;
+    }
+
+    public void setDailypunchlist(ArrayList<Punch> dailypunchlist) {
+        this.dailypunchlist = dailypunchlist;
+    }
+    
+    public void getDailyPunchlist(long timestamp) {
+        
+        Database db = new Database();
+        String badgeid = db.getBadgeid(username);
+        Badge b = this.getBadge(badgeid);
+        this.setDailypunchlist(db.getDailyPunchList(b, timestamp));
+          
     }
     
     public void insertPunch(int terminalid) {
