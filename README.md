@@ -1,3 +1,4 @@
 # Payroll System
-  
-  This is a web based implementation of a payroll system which is in progress now. It is a web based implementation of a Time-In Time-Out Attendance System (https://github.com/sbanjara/TAS-SP19) that I worked in my Software Engineering I class. This program provides **clock-in/clock-out** interface for the company, **User Login**, **view of time punches of an employee**, **interface for employee's payroll**, and **interface for employee's absenteeism**. The completed version of this program will be posted shortly.
+  ##
+  This is a web based implementation of a Time, Attendance, and Payroll system of a company. This application provides a **Clock-in/Clock-out** terminals via which an employee can insert their time punches, **User Login**, **View of Time Punches** either daily or for a pay period, **Interface for Employee's Payroll**, and **Interface for Employee's Absenteeism**. Currently, the implementation for employee's Payroll and Absenteeism interface is on progress and will be posted shortly.
+  ##
