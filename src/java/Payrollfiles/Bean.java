@@ -19,8 +19,7 @@ public class Bean {
     private ArrayList<Punch> dailypunchlist;
     
     public Bean() {
-        
-        this.username = "";
+       
         this.badgeid = "";
         this.terminalid = 0;
         this.description = "";

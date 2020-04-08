@@ -12,7 +12,8 @@ header {
     padding: 5px;
     background-color: #0f2040;
     color: #fff;
-    font-family: sans-serif;
+    font-family: 'Work Sans', sans-serif;
+    font-family: 'Oswald', sans-serif;
     font-size: 40px;
     text-align: center;
     
@@ -64,6 +65,7 @@ header {
     
     color: #1F2667;
     height: 30px;
+    font-size: 20px;
     padding: 5px 15px 5px 15px;
    
 }
@@ -72,6 +74,7 @@ header {
     
     color: #1F2667;
     height: 30px;
+    font-size: 20px;
     padding: 5px 15px 5px 15px;
     
 }

@@ -17,7 +17,7 @@
         
         <script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="main.css">
-        
+        <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Work+Sans&display=swap" rel="stylesheet">
         
     </head>
     
@@ -52,10 +52,18 @@
         
         <%  
 
-                String id = bean.getBadgeid();
-                if( !(id.isEmpty()) ) {
-                    bean.insertPunch(104);
-                }
+            String id = bean.getBadgeid();
+            int terminalid = bean.getTerminalid();
+            if(terminalid == 0) {
+                bean.setTerminalid(104);
+            }
+            else if(terminalid != 0) {
+                bean.setTerminalid(0);
+            }
+            terminalid = bean.getTerminalid();
+            if( !(id.isEmpty()) && (terminalid == 104) ) {
+                bean.insertPunch(terminalid);
+            }
         
         %>
         
@@ -67,8 +75,10 @@
             %>
 
             <p>Thank you for Clocking-In</p>
+           
 
             <%
+                bean.setPunchtypeid("");
                 }
                 else if ( punchid.equals(String.valueOf(0)) ) {
             %>
@@ -76,6 +86,7 @@
             <p>Thank you for Clocking-Out</p>
 
             <%
+                bean.setPunchtypeid("");
                 }
                 else if( punchid.equals("Error, Number of Punches exceeded!!") ) {
             %>
@@ -83,6 +94,7 @@
             <p>Error, Number of Punches exceeded!!</p>
 
             <%
+                bean.setPunchtypeid("");
                 }
                 else if( punchid.equals("Error, Please fill the BadgeID field.") ) {
             %>
@@ -90,6 +102,7 @@
              <p>Error, Please fill the BadgeID field.</p>
 
             <%
+                bean.setPunchtypeid("");
                 }
             %>
 

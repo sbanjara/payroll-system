@@ -12,6 +12,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
+        <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Work+Sans&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/login.css">
         
     </head>
@@ -48,7 +49,7 @@
                         </p>
 
                         <p>
-                            <label for="j_password"> Password:</label>
+                            <label for="j_password">Password:</label>
                             <input type="password" name="j_password" id="j_password">
                         </p>
 
@@ -65,7 +66,7 @@
                     if (result != null) {
                 %>
 
-                <div id="loginerror" style="color: red;">
+                <div id="loginerror" style="color: #BC0000; font-size: 20px;">
 
                     <b>There was a problem processing your login request.</b>
 
