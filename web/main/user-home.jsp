@@ -51,7 +51,8 @@
                
         </form>
         
-        <%  
+        <% 
+            
             bean.setTimestamp(bean.getPunchlistdate());
             bean.getDailyPunchlist(bean.getTimestamp());
         

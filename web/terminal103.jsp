@@ -54,15 +54,18 @@
 
             String id = bean.getBadgeid();
             int terminalid = bean.getTerminalid();
-            if(terminalid == 0) {
-                bean.setTerminalid(103);
-            }
-            else if(terminalid != 0) {
+      
+            if(terminalid != 103) {
                 bean.setTerminalid(0);
             }
             terminalid = bean.getTerminalid();
+            if(terminalid != 103) {
+                bean.setTerminalid(103);
+            }
+            
             if( !(id.isEmpty()) && (terminalid == 103) ) {
                 bean.insertPunch(terminalid);
+                bean.setBadgeid("");
             }
         
         %>

@@ -25,7 +25,7 @@ header > p {
     
 }
 
-img {
+#cover-photo {
     
     float: left;
     margin-top: -120px;
@@ -39,7 +39,7 @@ img {
     justify-content: center;
     border-bottom: solid;
     border-bottom-width: 1px;
- 
+
 }
 
 #sub-header > a {
@@ -111,4 +111,61 @@ form {
     
     text-align: center;
     font-size: 30px;
+}
+
+#footer {
+	
+    background-color: #0f2040;
+    color: white;
+	
+}
+
+#author-section {
+	
+    float: left;
+    font-size: 20px;
+    padding-left: 50px;
+    background-color: #0f2040;
+}
+
+#icons {
+	
+    display: flex;
+    justify-content: flex-end;
+    left: 50%;
+    background-color: #0f2040;
+	
+}
+
+.icon {
+	
+    display: flex;
+
+}
+
+.icon a {
+	
+    display: block;
+    padding: 5px 15px 5px 15px;
+  
+}
+
+.icon a:hover {
+	
+    margin-top: -15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: #BC0000;
+	
+}
+
+ul {
+    list-style: none;
+}
+
+#icons a {
+	
+    text-decoration: none !important;
+    color: white;
+
 }

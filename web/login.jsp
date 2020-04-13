@@ -66,13 +66,9 @@
                     if (result != null) {
                 %>
 
-                <div id="loginerror" style="color: #BC0000; font-size: 20px;">
+                <div id="loginerror" style="color: #BC0000; font-size: 20px; padding-top: 10px;">
 
-                    <b>There was a problem processing your login request.</b>
-
-                    <ul>
-                        <li>Please try entering your Username and Password again.</li>
-                    </ul>
+                    <b>There was a problem processing your login request. Invalid Username/Password.</b>
 
                 </div>
 
