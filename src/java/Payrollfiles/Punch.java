@@ -282,7 +282,7 @@ public class Punch {
                     
                     //CHECKS IF THE PUNCH IS BEFORE THE SHIFT STOP
                     
-                    if(punchTime.isBefore(shiftStop) ) {
+                    if( punchTime.isBefore(shiftStop) ) {
                         
                         if( (totalshiftStopMinutes - totalpunchTimeMinutes) <= gracePeriod ) {
                             adjustMessage = "Shift Stop";

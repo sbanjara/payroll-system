@@ -1,127 +1,99 @@
 
 body {
-    
     margin: 0px;
-    padding: 0;
     border: 0;
-    
+    padding: 0; 
 }
 
 header {
-    
-    padding: 5px;
-    background-color: #0f2040;
     color: #fff;
-    font-family: 'Work Sans', sans-serif;
-    font-family: 'Oswald', sans-serif;
+    padding: 5px;
     font-size: 40px;
     text-align: center;
-    
+    background-color: #0f2040;
+    font-family: 'Oswald', sans-serif;   
+    font-family: 'Work Sans', sans-serif;
 }
 
 header > p {
-    
-    margin-left: 220px;
-    
+    margin-left: 220px; 
 }
 
-#cover-photo {
-    
+#cover-photo { 
     float: left;
     margin-top: -120px;
     margin-left: 390px;
-    
 }
   
 #sub-header {
-    
     display: flex;
-    justify-content: center;
     border-bottom: solid;
+    justify-content: center;
     border-bottom-width: 1px;
-
 }
 
 #sub-header > a {
-  
     color: #363636;
-    padding: 10px 30px 10px 30px;
+    pointer: cursor;
     font-size: 30px;
     text-decoration: none;
-  
+    padding: 10px 30px 10px 30px;
 }
 
 #sub-header > a:hover {
-    
     background-color: #f1f1f1;
-    
 }
 
 form {
-    
     margin-top: 100px;
     text-align: center;
     font-size: 30px;
     color: #1F2667;
-    
 }
 
 #badgeid {
-    
     color: #1F2667;
     height: 30px;
     font-size: 20px;
     padding: 5px 15px 5px 15px;
-    
 }
 
 #punchlistdate {
-    
     color: #1F2667;
     height: 30px;
     font-size: 20px;
     text-transform: uppercase;
     padding: 5px 15px 5px 15px;
-    
 }
 
-
 #Submit {
-    
-    background-color: #1F2667;
     border: none;
     color: white;
-    padding: 10px 20px 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 20px;
     margin: 4px 2px;
     cursor: pointer;
-        
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    background-color: #1F2667;
+    padding: 10px 20px 10px 20px;     
 }
 
 #Submit:hover {
-    
-    background-color: #0f2040;
-     
+    background-color: #0f2040; 
 }
 
 #resultsarea {
-    
-    text-align: center;
     font-size: 30px;
+    text-align: center;
 }
 
 #footer {
-	
-    background-color: #0f2040;
     color: white;
-	
+    background-color: #0f2040;
 }
 
 #author-section {
-	
     float: left;
     font-size: 20px;
     padding-left: 50px;
@@ -129,34 +101,26 @@ form {
 }
 
 #icons {
-	
+    left: 50%;
     display: flex;
     justify-content: flex-end;
-    left: 50%;
-    background-color: #0f2040;
-	
+    background-color: #0f2040;	
 }
 
-.icon {
-	
+.icon {	
     display: flex;
-
 }
 
 .icon a {
-	
     display: block;
     padding: 5px 15px 5px 15px;
-  
 }
 
-.icon a:hover {
-	
+.icon a:hover {	
     margin-top: -15px;
     padding-top: 20px;
     padding-bottom: 20px;
-    background: #BC0000;
-	
+    background: #BC0000;	
 }
 
 ul {
@@ -164,8 +128,6 @@ ul {
 }
 
 #icons a {
-	
-    text-decoration: none !important;
     color: white;
-
+    text-decoration: none !important;
 }

@@ -44,13 +44,9 @@ public class Database {
         try {
             
             query = "SELECT * FROM employee WHERE firstname = ?";
-
-            pstatement = conn.prepareStatement(query);
-                
-            if(!username.isEmpty())
-                pstatement.setString(1, username);
-                
-            hasresults = pstatement.execute();                
+            pstatement = conn.prepareStatement(query);     
+            pstatement.setString(1, username);            
+            hasresults = pstatement.execute();     
  
             if ( hasresults ) {
                 
@@ -59,6 +55,7 @@ public class Database {
                 while(resultset.next()) {
 
                     id = resultset.getString("badgeid");
+                    System.out.println("Badge id = " + id);
 
                 }
 

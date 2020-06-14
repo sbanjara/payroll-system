@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class Bean {
@@ -95,7 +96,7 @@ public class Bean {
             int year = Integer.parseInt(date[0]);
             int month = Integer.parseInt(date[1]);
             int day = Integer.parseInt(date[2]);
-            LocalDateTime ldt = LocalDateTime.of(year, month, day, 0, 0);
+            LocalDateTime ldt = LocalDateTime.of(year, month, day, 6, 30);
             Timestamp ts = Timestamp.valueOf(ldt);
             this.timestamp = ts.getTime();
             

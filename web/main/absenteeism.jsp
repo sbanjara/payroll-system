@@ -45,9 +45,9 @@
         
         <div id="sub-header">
         
-            <a>Daily PunchList</a>
-            <a>Pay period PunchList</a>
-            <a>View Absenteeism</a>
+            <a href="user-home.jsp">Daily PunchList</a>
+            <a href="payperiod_punchlist.jsp">Pay period PunchList</a>
+            <a href="absenteeism.jsp">View Absenteeism</a>
             <a href="logout.jsp">Logout</a>
         
         </div>

@@ -1,10 +1,12 @@
 
+<%@page import="Payrollfiles.Logic"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="Payrollfiles.Punch"%>
 <%@page import="Payrollfiles.Punch"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <jsp:useBean id="bean" class="Payrollfiles.Bean" scope="application" />
-
+<jsp:setProperty name="bean" property="*" />
 <jsp:setProperty name="bean" property="username" value="<%= request.getRemoteUser() %>" />
 
 
@@ -21,8 +23,7 @@
         <script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/main.css">
         <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Work+Sans&display=swap" rel="stylesheet">
-        
-        
+         
     </head>
     
     <body>
@@ -35,9 +36,9 @@
         
         <div id="sub-header">
         
-            <a>Daily PunchList</a>
-            <a>Pay period PunchList</a>
-            <a>View Absenteeism</a>
+            <a href="user-home.jsp">Daily PunchList</a>
+            <a href="payperiod_punchlist.jsp">Pay period PunchList</a>
+            <a href="absenteeism.jsp">View Absenteeism</a>
             <a href="logout.jsp">Logout</a>
         
         </div>
@@ -46,15 +47,16 @@
               
             <label for="input">Punchlist Date:</label>
             <input type="DATE" name="punchlistdate" id="punchlistdate">
-
             <input type="Submit" value="Submit" id="Submit">        
                
         </form>
         
         <% 
-            
-            bean.setTimestamp(bean.getPunchlistdate());
-            bean.getDailyPunchlist(bean.getTimestamp());
+            if(!bean.getPunchlistdate().isEmpty()) {
+                
+           
+                bean.setTimestamp(bean.getPunchlistdate());
+                bean.getDailyPunchlist(bean.getTimestamp());
         
         %>
         
@@ -62,24 +64,28 @@
         
             <%  
                 ArrayList<Punch> punches = bean.getDailypunchlist();
+      
                 if ( punches.isEmpty() ) {
             %>
 
-            <p> Username: <%= bean.getUsername() %> <p>
-            <p>No punches were registered for the given date.</p>
+            <p> It is empty!! </p>
 
             <%
-                }
+                }       
                 else {
-                    for(Punch p: punches) {
+                for(Punch p: punches) {
             %>
-
-            <p> <%= p.toString() %></p>
-
+            
+            <%  
+                String s = p.printOriginalTimestamp();
+            %>
+            
+            <p> <%= s.toString() %> </p>
+            
             <%
+                }   
                 }
-
-                }
+            }
             %>
 
         </div>
