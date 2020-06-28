@@ -1,5 +1,5 @@
 
-package Payrollfiles;
+package Payrollfiles.model;
 
 
 public class Badge {

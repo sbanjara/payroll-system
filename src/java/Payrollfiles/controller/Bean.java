@@ -1,12 +1,13 @@
 
-package Payrollfiles;
+package Payrollfiles.controller;
 
+import Payrollfiles.model.Badge;
+import Payrollfiles.model.Shift;
+import Payrollfiles.model.Punch;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-
+import org.json.simple.parser.ParseException;
 
 public class Bean {
     
@@ -14,17 +15,15 @@ public class Bean {
     private String badgeid;
     private int terminalid;
     private String description;
-    private String punchtypeid;
     private String punchlistdate;
     private long timestamp;
     private ArrayList<Punch> dailypunchlist;
-    
+  
     public Bean() {
        
         this.badgeid = "";
         this.terminalid = 0;
         this.description = "";
-        this.punchtypeid = "";
         this.punchlistdate = "";
         
     }
@@ -60,14 +59,6 @@ public class Bean {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getPunchtypeid() {
-        return punchtypeid;
-    }
-
-    public void setPunchtypeid(String punchtypeid) {
-        this.punchtypeid = punchtypeid;
-    }
     
     public Badge getBadge(String badgeid) {
         Database db = new Database();
@@ -86,6 +77,10 @@ public class Bean {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setTimestamp(String timestamp) {
@@ -112,42 +107,51 @@ public class Bean {
         this.dailypunchlist = dailypunchlist;
     }
     
-    public void getDailyPunchlist(long timestamp) {
-        
+    public void getDailyPunchlist(long timestamp) {  
         Database db = new Database();
-        String badgeid = db.getBadgeid(username);
         Badge b = this.getBadge(badgeid);
-        this.setDailypunchlist(db.getDailyPunchList(b, timestamp));
-          
+        this.setDailypunchlist(db.getDailyPunchList(b, timestamp));      
     }
     
-    public void insertPunch(int terminalid) {
+    public String getEmployee() {
+        Database db = new Database();
+        String badgeid = db.getBadgeid(username);
+        this.setBadgeid(badgeid);
+        return db.getEmployee(badgeid);
+    }
+    
+    public Shift getShift() {
+        Database db = new Database();
+        Badge badge = db.getBadge(badgeid);
+        return db.getShift(badge);
+    }
+    
+    public String insertPunch(int terminalid) {
         
         Database db = new Database();
+        String result = "";
         
         if( this.getBadgeid().length() == 8 ) {
             
             Badge b = getBadge(this.getBadgeid());
-            String result = String.valueOf(1);
-            int punchtypeid = 1;
+            int punchtypeid = Logic.CLOCKIN;
             ArrayList<Punch> punches = db.getDailyPunchList(b, System.currentTimeMillis());
             int numOfPunches = punches.size();
 
             if(numOfPunches == 0) {
                 punchtypeid = Logic.CLOCKIN;
-                result = String.valueOf(punchtypeid);
+                result = "Thank you for Clocking-In";
             }
             else if(numOfPunches <= 3) {
-
-                Punch lastpunch = punches.get(punches.size()-1);
-                int id = lastpunch.getPunchtypeid();
-                if(id == Logic.CLOCKIN) {
+                
+                if(numOfPunches % 2 == Logic.CLOCKIN) {
                     punchtypeid = Logic.CLOCKOUT;
+                    result = "Thank you for Clocking-Out";
                 }
-                else if(id == Logic.CLOCKOUT) {
+                else if(numOfPunches % 2 == Logic.CLOCKOUT) {
                     punchtypeid = Logic.CLOCKIN;
+                    result = "Thank you for Clocking-In";
                 }
-                result = String.valueOf(punchtypeid);
 
             }
             else {
@@ -155,21 +159,51 @@ public class Bean {
             }
 
             if( numOfPunches <= 3 && !(badgeid.isEmpty()) ) {
-
                 Punch p = new Punch(b, terminalid, punchtypeid);
                 db.insertPunch(p);
-
             }
-
-            this.setPunchtypeid(result);
         
         }
-        
-        else {
-            this.setBadgeid("");
-            this.setPunchtypeid("Error, Please fill the BadgeID field."); 
-        }
+       
+        this.setBadgeid("");
+        return result;
         
     }
+    
+    public String getDailylistAsTable() throws ParseException {
+        
+        String data = "";
+        if(!getPunchlistdate().isEmpty()) {
+             
+            this.setTimestamp(getPunchlistdate());
+            getDailyPunchlist(getTimestamp());
+            ArrayList<Punch> punches = getDailypunchlist();
+            Shift shift = getShift();
+            data = Logic.getlistAsTable(punches, shift);
+            
+        }  
+        this.setPunchlistdate("");
+        return data;
+        
+    }
+    
+    public String getPayperiodlistAsTable() throws ParseException {
+        
+        String data = "";
+        if(!getPunchlistdate().isEmpty()) {
+             
+            this.setTimestamp(getPunchlistdate());
+            Database db = new Database();
+            Badge b = this.getBadge(badgeid);
+            ArrayList<Punch> punches = db.getPayPeriodPunchList(b, getTimestamp());
+            Shift shift = getShift();  
+            data = Logic.getlistAsTable(punches, shift);
+            
+        }
+        this.setPunchlistdate("");
+        return data;
+      
+    }
+    
     
 }

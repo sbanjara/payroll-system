@@ -1,6 +1,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<jsp:useBean id="bean" class="Payrollfiles.controller.Bean" scope="application" />
+<jsp:setProperty name="bean" property="badgeid" value="" />
+
 
 <!DOCTYPE html>
 
@@ -13,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Work+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/login.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/public/cssfiles/login.css">
         
     </head>
     
@@ -27,8 +30,8 @@
         
         <div id="sub-header"> 
             
-            <a href="login.jsp">Login Setup</a>
-            <a href="index.html">Home Page</a>
+            <a href="<%= request.getContextPath() %>/public/login.jsp">Login Setup</a>
+            <a href="<%= request.getContextPath() %>/public/index.html">Home Page</a>
             <br></br>
                
         </div>

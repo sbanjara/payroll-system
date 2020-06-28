@@ -1,14 +1,18 @@
 
-package Payrollfiles;
+package Payrollfiles.controller;
 
+import Payrollfiles.model.Shift;
+import Payrollfiles.model.Punch;
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * The TASLogic class contains functions that will be needed for use by  
@@ -47,22 +51,23 @@ public class Logic {
     
         for(int i = 0; i < dailypunchlist.size(); i++) {
             
-           if (dailypunchlist.get(i).getPunchtypeid() == CLOCKIN) {           
-               inTime = dailypunchlist.get(i).getAdjustedTimeStamp().getTime();
-               punchCounter++;
-               continue;        
-           }
+            dailypunchlist.get(i).adjust(shift);
+            if (dailypunchlist.get(i).getPunchtypeid() == CLOCKIN) {           
+                inTime = dailypunchlist.get(i).getAdjustedTimeStamp().getTime();
+                punchCounter++;
+                continue;        
+            }
 
-           if (dailypunchlist.get(i).getPunchtypeid() == CLOCKOUT) {
-               outTime = dailypunchlist.get(i).getAdjustedTimeStamp().getTime();
-               punchCounter++;          
-           }
-           
-           if (inTime != 0 && outTime != 0) {         
-               totalMillis += outTime - inTime;              
-           }                
-           inTime = 0;
-           outTime = 0;
+            if (dailypunchlist.get(i).getPunchtypeid() == CLOCKOUT) {
+                outTime = dailypunchlist.get(i).getAdjustedTimeStamp().getTime();
+                punchCounter++;          
+            }
+
+            if (inTime != 0 && outTime != 0) {         
+                totalMillis += outTime - inTime;              
+            }                
+            inTime = 0;
+            outTime = 0;
            
         }
         
@@ -182,6 +187,7 @@ public class Logic {
      
         for(Punch p : punchlist){
            
+            p.adjust(s);
             HashMap<String, String> punchData = new HashMap<>();
             punchData.put("terminalid", String.valueOf(p.getTerminalid()));
             punchData.put("badgeid", p.getBadgeid());
@@ -200,6 +206,86 @@ public class Logic {
         jsonData.add(data);
         
         return JSONValue.toJSONString(jsonData);
+        
+    }
+    
+    public static String getlistAsTable(ArrayList<Punch> punches, Shift shift) throws ParseException {
+        
+        String data = "";
+        
+        if (!punches.isEmpty()) {
+
+            String json = getPunchListPlusTotalsAsJSON(punches, shift);
+            JSONParser parser = new JSONParser();
+            JSONArray object = (JSONArray) parser.parse(json);
+            JSONObject lastobject = (JSONObject) object.get(object.size()-1);
+            String totalmins = (String) lastobject.get("totalminutes");
+            String absenteeism = (String) lastobject.get("absenteeism");
+            
+            GregorianCalendar cal = new GregorianCalendar();
+            JSONObject map = (JSONObject) object.get(0);
+            String stringots = (String) map.get("originaltimestamp");
+            long ots = Long.parseLong(stringots);
+            cal.setTimeInMillis(ots);
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            String payperiod = (new SimpleDateFormat("EEE MM-dd-yyyy")).format(cal.getTime());
+            
+            if (object.size() > 5) {
+                data += "<br/><strong> <p class=\"timeviewright\">Pay Period starting on " + 
+                        payperiod.toUpperCase();
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                payperiod = (new SimpleDateFormat("EEE MM-dd-yyyy")).format(cal.getTime());
+                data += " and ending on " + payperiod.toUpperCase() + ":</p> </strong>";
+            }
+            
+            data += "<br/><table><tr><th>Original Timestamp</th><th>Adjusted Timestamp"
+                + "</th><th>Punchtype</th></tr>";
+
+            for (int i = 0; i < object.size() - 1; ++i) {
+
+                map = (JSONObject) object.get(i);
+                stringots = (String) map.get("originaltimestamp");
+                ots = Long.parseLong(stringots);
+
+                String stringats = (String) map.get("adjustedtimestamp");
+                long ats = Long.parseLong(stringats);
+
+                String id = (String) map.get("punchtypeid");
+                String punchid = "Clock-In";
+
+                if (id.equals("0")) {
+                    punchid = "Clock-Out";
+                }
+
+                cal = new GregorianCalendar();
+                cal.setTimeInMillis(ots);
+                String pattern = "EEE MM/dd/yyyy HH:mm:ss";
+                SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+                String otimestamp = sdf.format(cal.getTime()).toUpperCase();
+
+                GregorianCalendar cal2 = new GregorianCalendar();
+                cal2.setTimeInMillis(ats);
+                String atimestamp = sdf.format(cal2.getTime()).toUpperCase();
+
+                data += "<tr><td>" + otimestamp + "</td><td>" + atimestamp + "</td><td>" + punchid + "</td></tr>";
+
+            }
+
+            data += "</table><strong><p class=\"timeview\">Total Work "
+                    + "(In Minutes): " + totalmins + "</p></strong>";
+            
+            if (object.size() > 5) {
+                data += "<strong> <p class=\"timeview\">Your Absenteeism " + 
+                        "(In Percentage): " + absenteeism + "</p> </strong>";
+            }
+
+        }
+
+        else {
+            data = "<p id=\"errormessage\">You haven't registered any time punches in the given date!!</p>";
+        }
+            
+        return data;
         
     }
     

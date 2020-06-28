@@ -1,6 +1,10 @@
 
-package Payrollfiles;
+package Payrollfiles.controller;
 
+import Payrollfiles.model.Badge;
+import Payrollfiles.model.Shift;
+import Payrollfiles.model.Punch;
+import Payrollfiles.model.Absenteeism;
 import java.sql.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -51,12 +55,8 @@ public class Database {
             if ( hasresults ) {
                 
                 resultset = pstatement.getResultSet();
-
                 while(resultset.next()) {
-
-                    id = resultset.getString("badgeid");
-                    System.out.println("Badge id = " + id);
-
+                    id = resultset.getString("badgeid");          
                 }
 
             }
@@ -66,6 +66,40 @@ public class Database {
         catch (Exception e) { e.printStackTrace(); }
         
         return id;
+        
+    }
+    
+    public String getEmployee(String badgeid) {
+        
+        String employee = null;
+        String query = null;
+        boolean hasresults;
+        PreparedStatement pstatement = null;
+        ResultSet resultset = null;  
+        
+        try {
+            
+            query = "SELECT * FROM employee WHERE badgeid = ?";
+            pstatement = conn.prepareStatement(query);  
+            
+            if(badgeid.length() == 8)
+                pstatement.setString(1, badgeid);            
+            hasresults = pstatement.execute();     
+ 
+            if ( hasresults ) {
+                
+                resultset = pstatement.getResultSet();
+                while(resultset.next()) {
+                    employee = resultset.getString("firstname") + " " + resultset.getString("lastname");          
+                }
+
+            }
+
+        }
+        
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return employee;
         
     }
     
@@ -438,7 +472,7 @@ public class Database {
     }
     
     
-    public ArrayList getPayPeriodPunchList(Badge b, long timestamp) {
+    public ArrayList<Punch> getPayPeriodPunchList(Badge b, long timestamp) {
         
         String query = null;
         boolean hasresults;

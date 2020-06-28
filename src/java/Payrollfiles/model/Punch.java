@@ -1,5 +1,5 @@
 
-package Payrollfiles;
+package Payrollfiles.model;
 
 import java.sql.Timestamp;
 import java.util.*;

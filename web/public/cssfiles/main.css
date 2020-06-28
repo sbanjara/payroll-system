@@ -5,6 +5,26 @@ body {
     padding: 0; 
 }
 
+.timeview {
+    text-align: right;
+    margin-right: 25%;
+    font-size: 20px;
+    color: #0f2040;
+}
+
+.timeviewright {
+    text-align: left;
+    margin-left: 25%;
+    font-size: 20px;
+    color: #0f2040;
+}
+
+#errormessage {
+    text-align: center;
+    font-size: 25px;
+    color: #0f2040; 
+}
+
 header {
     color: #fff;
     padding: 5px;
@@ -16,7 +36,15 @@ header {
 }
 
 header > p {
-    margin-left: 220px; 
+    margin-left: 300px; 
+}
+
+#line {
+    margin-top: 37px;
+    height: 3px;
+    width: 25px;
+    background-color: white;
+    transform: rotate(90deg);
 }
 
 #cover-photo { 
@@ -42,6 +70,10 @@ header > p {
 
 #sub-header > a:hover {
     background-color: #f1f1f1;
+}
+
+.body-section {
+    height: 60vh;
 }
 
 form {
@@ -89,15 +121,15 @@ form {
 }
 
 #footer {
+    display: flex;
+    justify-content: space-between;
     color: white;
     background-color: #0f2040;
 }
 
 #author-section {
-    float: left;
     font-size: 20px;
-    padding-left: 50px;
-    background-color: #0f2040;
+    padding-left: 5%;
 }
 
 #icons {
@@ -109,25 +141,73 @@ form {
 
 .icon {	
     display: flex;
+    justify-content: space-evenly;
+    padding-right: 5%;
+    width: 30%; 
 }
 
 .icon a {
-    display: block;
+    cursor: pointer;
     padding: 5px 15px 5px 15px;
+    text-decoration: none !important;
 }
 
 .icon a:hover {	
-    margin-top: -15px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background: #BC0000;	
+    background: #BC0000;
 }
 
 ul {
     list-style: none;
 }
 
-#icons a {
-    color: white;
-    text-decoration: none !important;
+#column {
+    margin-left: 15%;
+    margin-right: 15%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 30px;
+    color: #0f2040;
+}
+
+.col_header {
+    margin-left: 15%;
+    margin-right: 15%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#employee_description {
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 25px;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+#output {
+    font-size: 20px;
+    color: black;
+}
+
+#output > p {
+    margin-left: 18%;
+    margin-right: 15%;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }
