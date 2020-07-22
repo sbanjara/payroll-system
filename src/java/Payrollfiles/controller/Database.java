@@ -47,7 +47,7 @@ public class Database {
         
         try {
             
-            query = "SELECT * FROM employee WHERE firstname = ?";
+            query = "SELECT * FROM user WHERE username = ?";
             pstatement = conn.prepareStatement(query);     
             pstatement.setString(1, username);            
             hasresults = pstatement.execute();     
@@ -79,6 +79,40 @@ public class Database {
         
         try {
             
+            query = "SELECT * FROM badge WHERE id = ?";
+            pstatement = conn.prepareStatement(query);  
+            
+            if(badgeid.length() == 8)
+                pstatement.setString(1, badgeid);            
+            hasresults = pstatement.execute();     
+ 
+            if ( hasresults ) {
+                
+                resultset = pstatement.getResultSet();
+                while(resultset.next()) {
+                    employee = resultset.getString("description");          
+                }
+
+            }
+
+        }
+        
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return employee;
+        
+    }
+    
+    public HashMap<String, Integer> getEmployeeInfo(String badgeid) {
+        
+        HashMap<String, Integer> employee = new HashMap<>();
+        String query = null;
+        boolean hasresults;
+        PreparedStatement pstatement = null;
+        ResultSet resultset = null;  
+        
+        try {
+            
             query = "SELECT * FROM employee WHERE badgeid = ?";
             pstatement = conn.prepareStatement(query);  
             
@@ -90,7 +124,8 @@ public class Database {
                 
                 resultset = pstatement.getResultSet();
                 while(resultset.next()) {
-                    employee = resultset.getString("firstname") + " " + resultset.getString("lastname");          
+                    employee.put("departmentid", resultset.getInt("departmentid")); 
+                    employee.put("employeetypeid", resultset.getInt("employeetypeid"));
                 }
 
             }
@@ -100,6 +135,42 @@ public class Database {
         catch (Exception e) { e.printStackTrace(); }
         
         return employee;
+        
+    }
+    
+    public int getSalaryRate(int departmentid, int employeetypeid) {
+        
+        int salary = 0;
+        String query = null;
+        boolean hasresults;
+        PreparedStatement pstatement = null;
+        ResultSet resultset = null;  
+        
+        try {
+            
+            query = "SELECT * FROM salary WHERE departmentid = ? AND employeetypeid = ?";
+            pstatement = conn.prepareStatement(query);  
+            
+            if(departmentid > 0 && departmentid < 11)
+                pstatement.setInt(1, departmentid);  
+            if(employeetypeid == 0 || employeetypeid == 1)
+                pstatement.setInt(2, employeetypeid);
+            hasresults = pstatement.execute();     
+ 
+            if ( hasresults ) {
+                
+                resultset = pstatement.getResultSet();
+                while(resultset.next()) {
+                    salary = resultset.getInt("rate");          
+                }
+
+            }
+
+        }
+        
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return salary;
         
     }
     

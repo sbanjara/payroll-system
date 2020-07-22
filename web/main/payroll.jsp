@@ -2,43 +2,34 @@
 
 <jsp:useBean id="bean" class="Payrollfiles.controller.Bean" scope="application" />
 <jsp:setProperty name="bean" property="*" />
+<jsp:setProperty name="bean" property="username" value="<%= request.getRemoteUser() %>" />
+
 
 <!DOCTYPE html>
 
 <html>
     
-    <style>
-        
-        #myProgress {
-          width: 100%;
-          background-color: #ddd;
-        }
-
-        #myBar {
-          width: 0%;
-          height: 30px;
-          background-color: #4CAF50;
-        }
-        
-    </style>
-    
     <head>
         
-        <title>Employee Home/Payroll</title>
+        <title>Employee Home</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/public/cssfiles/main.css">
-        
-        
+        <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Work+Sans&display=swap" rel="stylesheet">
+         
     </head>
     
     <body>
         
         <header>
             
-            <p style = "margin: 0px; text-align: center; padding: 10px;">Payroll Information</p>
+            <div id="employee_description">
+                <p> Employee: <%= bean.getEmployee() %> </p>
+                <div id="line"> </div>
+                <p> Badgeid: <%= bean.getBadgeid() %> </p>
+            </div>
             
         </header>
         
@@ -50,8 +41,17 @@
             <a href="logout.jsp">Logout</a>
         
         </div>
-    
+        
+        <form name="insertform" id="insertform" action="#" method="POST">
+              
+            <label for="input">Payperiod Date:</label>
+            <input type="DATE" name="punchlistdate" id="punchlistdate">
+            <input type="Submit" value="Submit" id="Submit">        
+               
+        </form>
+            
+        <%= bean.getSalaryInfo() %>          
+       
     </body>
     
 </html>
-

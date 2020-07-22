@@ -4,7 +4,12 @@ package Payrollfiles.model;
 import java.text.*;
 import java.util.*;
 
-
+/**
+ * The Absenteeism class is an abstraction of absenteeism percentage of an
+ * employee for a pay period. This class is used to calculate the absenteeism of
+ * an employee.
+ * @author Sabin Banjara
+ */
 public class Absenteeism {
     
     private String badgeid;

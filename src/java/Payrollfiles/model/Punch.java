@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * The Punch class is an abstraction of a time clock punch. This class is used
- * to store the information from a time clock punch and to adjust it according
- * to a given shifts rules
- * @author War Room F
+ * The Punch class is an abstraction of an employee's time punch. This class is used
+ * to store the information regarding the employee's time punches and to adjust 
+ * those punches according to the employee's shift and the company rules.
+ * @author Sabin Banjara
  */
 
 public class Punch {

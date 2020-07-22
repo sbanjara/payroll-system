@@ -1,7 +1,11 @@
 
 package Payrollfiles.model;
 
-
+/**
+ * The Badge class is an abstraction of an employee's badge. The employee's
+ * badge contains badgeid and the employee's full name.
+ * @author Sabin Banjara
+ */
 public class Badge {
     
     private String id;

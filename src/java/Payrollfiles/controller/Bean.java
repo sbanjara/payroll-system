@@ -7,8 +7,15 @@ import Payrollfiles.model.Punch;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.json.simple.parser.ParseException;
 
+/**
+ * The Bean class contains functions like insertPunch(), getDailylistAsTable(),
+ * getPayperiodlistAsTable(), and getSalaryInfo() which are called by 
+ * the Client or View (Java Server Page).
+ * @author Sabin Banjara
+ */
 public class Bean {
     
     private String username;
@@ -205,5 +212,25 @@ public class Bean {
       
     }
     
+    public String getSalaryInfo() throws ParseException {
+        
+        String data = "";
+        if(!getPunchlistdate().isEmpty()) {
+             
+            this.setTimestamp(getPunchlistdate());
+            Database db = new Database();
+            Badge b = this.getBadge(badgeid);
+            ArrayList<Punch> punches = db.getPayPeriodPunchList(b, getTimestamp());
+            Shift shift = getShift();  
+            HashMap<String, Integer> employeeInfo = new HashMap<>();
+            employeeInfo = db.getEmployeeInfo(badgeid);
+            int salaryrate = db.getSalaryRate(employeeInfo.get("departmentid"), employeeInfo.get("employeetypeid"));
+            data = Logic.getPayrollInfo(punches, shift, salaryrate);
+            
+        }
+        this.setPunchlistdate("");
+        return data;
+      
+    }
     
 }

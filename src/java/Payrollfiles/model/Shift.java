@@ -4,9 +4,10 @@ package Payrollfiles.model;
 import java.time.LocalTime;
 
 /**
- * The Shift class is an abstraction of a shift. This class is used to determine 
- * how the starting and stopping time for a particular shift and the rules that
- * determine how to adjust the punchs' timestamps.
+ * The Shift class is an abstraction of an employee's shift. This class is 
+ * used to determine the starting and stopping time for work and lunch break.
+ * Also, it contains information about the graceperiod, interval, and
+ * lunchdeduction time which are used when adjusting the employee's time punches.
  * @author Sabin Banjara
  */
 
@@ -24,7 +25,7 @@ public class Shift {
     private int dock;
     
     
-    public Shift(String description, int startHour, int startMin,int interval, int gracePeriod,
+    public Shift(String description, int startHour, int startMin, int interval, int gracePeriod,
             int dock, int stopHour, int stopMin, int lunchStartHour, int lunchStartMin,
             int lunchStopHour, int lunchStopMin, int lunchDeduct) {
         

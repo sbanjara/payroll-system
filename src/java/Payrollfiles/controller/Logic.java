@@ -15,9 +15,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * The TASLogic class contains functions that will be needed for use by  
- * payroll, mangers, etc.
- * @author War Room F
+ * The Logic class contains functions like calculateTotalMinutes, calculateAbsenteeism,
+ * getPunchListAsJSON, getListAsJSON, and getPayrollInfo. These functions are 
+ * consumed by the Bean class.
+ * @author Sabin Banjara
  */
 public class Logic {
     
@@ -179,7 +180,6 @@ public class Logic {
         ArrayList<HashMap<String, String>> jsonData = new ArrayList<>();
         double absenteeism = calculateAbsenteeism(punchlist, s);
         String a = String.format("%.2f", absenteeism);
-        a = a+ "%";
         
         int totalMin = 0;
         totalMin = (int) ((absenteeism/100)*2400);
@@ -221,6 +221,7 @@ public class Logic {
             JSONObject lastobject = (JSONObject) object.get(object.size()-1);
             String totalmins = (String) lastobject.get("totalminutes");
             String absenteeism = (String) lastobject.get("absenteeism");
+            absenteeism += "%";
             
             GregorianCalendar cal = new GregorianCalendar();
             JSONObject map = (JSONObject) object.get(0);
@@ -283,6 +284,56 @@ public class Logic {
 
         else {
             data = "<p id=\"errormessage\">You haven't registered any time punches in the given date!!</p>";
+        }
+            
+        return data;
+        
+    }
+    
+    public static String getPayrollInfo(ArrayList<Punch> punches, Shift shift, int rate) throws ParseException {
+        
+        String data = "";
+        
+        if (!punches.isEmpty()) {
+
+            String json = getPunchListPlusTotalsAsJSON(punches, shift);
+            JSONParser parser = new JSONParser();
+            JSONArray object = (JSONArray) parser.parse(json);
+            JSONObject lastobject = (JSONObject) object.get(object.size()-1);
+            String totalmins = (String) lastobject.get("totalminutes");
+            String absenteeism = (String) lastobject.get("absenteeism");
+            double absenteeismtime = Double.parseDouble(absenteeism);
+            double totaltime = Double.parseDouble(totalmins);
+            double salary = (totaltime / 60) * rate;
+            
+            GregorianCalendar cal = new GregorianCalendar();
+            JSONObject map = (JSONObject) object.get(0);
+            String stringots = (String) map.get("originaltimestamp");
+            long ots = Long.parseLong(stringots);
+            cal.setTimeInMillis(ots);
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            String payperiod = (new SimpleDateFormat("EEE MM-dd-yyyy")).format(cal.getTime());
+            
+           
+            data += "<br/><strong> <p class=\"timeviewright\">Pay Period starting on " + payperiod.toUpperCase();
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+            payperiod = (new SimpleDateFormat("EEE MM-dd-yyyy")).format(cal.getTime());
+            data += " and ending on " + payperiod.toUpperCase() + ":</p> </strong>";
+            
+            data += "<br/><table><tr><td>Total Time Worked (In Minutes)</td><td>" + totaltime + "</td></tr>";
+            if(absenteeismtime > 0) {
+                data += "<tr><td> Total Absenteeism (In Percentage)</td><td>" + absenteeism + "</td></tr>";
+            }
+            else {
+                absenteeismtime = (absenteeismtime/100)*-2400;
+                data += "<tr><td> Total Overtime (In Minutes)</td><td>" + absenteeismtime + "</td></tr>";
+            }
+            data += "<tr><td> Total Salary (In Dollars)</td><td>" + salary + "</td></tr> </table>";
+
+        }
+
+        else {
+            data = "<p id=\"errormessage\">You haven't worked in the given payperiod!!</p>";
         }
             
         return data;
